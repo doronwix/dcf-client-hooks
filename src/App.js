@@ -1,25 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import {DataProvider}  from './providers/DataProvider';
+import  StretchedData  from './components/StretchedData';
+import  TextInput  from './components/TextInput';
+import  LineChart  from './components/LineChart/LineChart';
 
 function App() {
+ 
   return (
+    
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <DataProvider>
+      <React.Fragment>
+      <CssBaseline />
+      <TextInput type="text" id="symbolText" name="symbolText" />
+      <StretchedData/>
+      <LineChart/>
+{/*       <Router
+            routes={routes}
+            initialURL={initialURL}
+            initialData={initialData}
+      /> */}
+      </React.Fragment> 
+      </DataProvider>
       </header>
     </div>
+   
   );
 }
 
