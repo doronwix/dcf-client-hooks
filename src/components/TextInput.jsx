@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
 const TextInput = (props) => {
     const classes = useStyles();
     const { name, label, type } = props;
-    const { secData, chartsData, symbol, updateSymbol } = useContext(Context);
+    const {  updateSymbol } = useContext(Context);
     return(
         <div className="">
         <label htmlFor={name}>{label}</label>

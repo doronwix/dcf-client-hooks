@@ -31,7 +31,7 @@ const DataProvider = ({ children }) => {
 
     const [secData, setSecData] = useState(null);
 
-    const [chartsData, setChartsData] = useState(null);
+    const [chartsData, setChartsData] = useState([]);
 
 
 
@@ -45,15 +45,34 @@ const DataProvider = ({ children }) => {
         fetchData(symbol)
         .then((data) => {
             //wacc_per_year[0] = wacc(data.merged_result[0]);
+            data.merged_result.sort(function (a, b) {
+                let first = parseInt(a.BalanceSheetDate.substring(0,4));
+                let second = parseInt(b.BalanceSheetDate.substring(0,4))
+                if (first < second) {
+                    return -1;
+                }
+                if (second < first) {
+                    return 1;
+                }
+                return 0;
+            });
             setSecData(data.merged_result);
             setChartsData(data.financialCalculationsResult);
             
 
         });
     }, [symbol]);
+
+    const store = {
+        symbol: symbol,
+        secData: secData,
+        chartsData: chartsData,
+        updateSymbol:updateSymbol
+
+      }
     return (
 
-        <Context.Provider value={{ secData, chartsData, symbol, updateSymbol}}>
+        <Context.Provider value={store}>
            {children}
         </Context.Provider>
 
