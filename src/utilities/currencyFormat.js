@@ -1,5 +1,16 @@
-import currency from 'currency.js'
+import currency from "currency.js";
 
-const usd = value => currency(value, { symbol: "$", precision: 2 }).format(true);
+let isM = false;
+const usd = (value) => {
+  if (value > 1000000) {
+    value = value / 1000000;
+    isM = true;
+  }
+  let valueForDisplay = currency(value, { symbol: "$", precision: 0 }).format(
+    true
+  );
 
-export {usd}
+  return isM ? valueForDisplay + "M" : valueForDisplay;
+};
+
+export { usd };

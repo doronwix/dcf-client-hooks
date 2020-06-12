@@ -7,12 +7,12 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import {Context}  from './../providers/DataProvider'
+import {financialContext} from './../providers/DataProvider'
 import {usd}  from './../utilities/currencyFormat'
 
 
 const TableView = () => {
-    const { secData } = useContext(Context);
+    const { secData } = useContext(financialContext);
     const useStyles = makeStyles(theme => ({
         root: {
           width: '100%',
@@ -49,6 +49,8 @@ const TableView = () => {
               <TableCell align="right">Liabil</TableCell>              
               <TableCell align="right">Capex</TableCell>
               <TableCell align="right">Net Income</TableCell>
+              <TableCell align="right">Acquisitions</TableCell>
+              <TableCell align="right">FCF</TableCell>
               {/*<TableCell align="right">CurrentLiabilities</TableCell>   */}       
             </TableRow>
           </TableHead>
@@ -64,11 +66,13 @@ const TableView = () => {
                 <TableCell align="right">{usd(row.TaxPaid)}</TableCell>
                 <TableCell align="right">{usd(row.GrossProfit)}</TableCell>
                 <TableCell align="right">{usd(row.SGandAexpenses)}</TableCell>
-                <TableCell align="right">{usd(row.NetIncomeLoss + row.InterestExpense + row.TaxPaid + row.DepreciationAndAmortization)}</TableCell>
+                <TableCell align="right">{usd(row.Ebitda)}</TableCell>
                 {/*<TableCell align="right">{usd((row.NetIncomeLoss + row.InterestExpense + row.TaxPaid) * (1-0.26) - row.Capex)}</TableCell>*/}
                 <TableCell align="right">{usd(row.Liabilities)}</TableCell>
                 <TableCell align="right">{usd(row.Capex)}</TableCell>   
-                <TableCell align="right">{usd(row.NetIncomeLoss)}</TableCell>                    
+                <TableCell align="right">{usd(row.NetIncomeLoss)}</TableCell>
+                <TableCell align="right">{usd(row.Acquisitions)}</TableCell>
+                <TableCell align="right">{usd(row.FCF)}</TableCell>
                 {/*<TableCell align="right">{usd(row.CurrentLiabilities)}</TableCell>*/}
                 
                 

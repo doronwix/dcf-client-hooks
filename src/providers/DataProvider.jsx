@@ -2,10 +2,9 @@
 import * as React from 'react';
 import { createContext, useState, useEffect } from 'react';
 
-import {wacc} from './finance';
 
 
-type ChartsData = {
+type chartsData = {
     fiscalYear: int,
     value:int
 
@@ -15,16 +14,28 @@ type ChartsData = {
 
 
 
-const Context = createContext();
-  async function fetchData(l_symbol) 
-        {
-        let response = await fetch(`/api/sec/${l_symbol}`,{
-            headers: {
-            accepts: "application/json"
-            }});
-        let res = await response.json()
-        return res;
-        }
+const financialContext = createContext();
+const rateContext = createContext();
+
+async function fetchSecData(l_symbol) 
+    {
+    let response = await fetch(`/api/sec/${l_symbol}`,{
+        headers: {
+        accepts: "application/json"
+        }});
+    let res = await response.json()
+    return res;
+    }
+
+    async function fetchRateData(l_symbol) 
+    {
+    let response = await fetch(`/api/rate/${l_symbol}`,{
+        headers: {
+        accepts: "application/json"
+        }});
+    let res = await response.json()
+    return res;
+    } 
 
 const DataProvider = ({ children }) => {
     const [symbol, setSymbol] = useState();
@@ -33,19 +44,21 @@ const DataProvider = ({ children }) => {
 
     const [chartsData, setChartsData] = useState([]);
 
+    const [rate, setRate] = useState();
 
 
-    const updateSymbol = ((e) => {
-        setSymbol(e.target.value);
+
+    const updateSymbol = ((value) => {
+        setSymbol(value);
     })
     useEffect(() => {
         if (!symbol){
             return;
         }
-        fetchData(symbol)
+        fetchSecData(symbol)
         .then((data) => {
-            //wacc_per_year[0] = wacc(data.merged_result[0]);
-            data.merged_result.sort(function (a, b) {
+           
+            data.financialData.sort(function (a, b) {
                 let first = parseInt(a.BalanceSheetDate.substring(0,4));
                 let second = parseInt(b.BalanceSheetDate.substring(0,4))
                 if (first < second) {
@@ -56,28 +69,46 @@ const DataProvider = ({ children }) => {
                 }
                 return 0;
             });
-            setSecData(data.merged_result);
-            setChartsData(data.financialCalculationsResult);
+            setSecData(data.financialData);
+            setChartsData(data.extrapolations);
             
 
         });
     }, [symbol]);
 
-    const store = {
+    useEffect(() => {
+        if (!symbol){
+            return;
+        }
+        fetchRateData(symbol)
+        .then((result) => {
+        
+            setRate(result.price);
+            
+        });
+    }, [symbol]);
+
+    const financialStore = {
         symbol: symbol,
         secData: secData,
         chartsData: chartsData,
         updateSymbol:updateSymbol
 
       }
+      const ratesStore = {
+        symbol: symbol,
+        rate: rate
+      }
     return (
 
-        <Context.Provider value={store}>
-           {children}
-        </Context.Provider>
+        <financialContext.Provider value={financialStore}>
+           <rateContext.Provider value={ratesStore}>
+            {children}
+           </rateContext.Provider>
+        </financialContext.Provider>
 
 
     );
 }
 
-export { Context, DataProvider };
+export { financialContext,rateContext, DataProvider };
