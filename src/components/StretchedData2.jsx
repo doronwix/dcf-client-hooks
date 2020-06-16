@@ -146,7 +146,24 @@ const TableView = () => {
                  
                  <TableCell align="right" key={"fcf_" + index}>{usd(cell.FCF)}</TableCell>    
             ))} 
-            </TableRow>                                                       
+            </TableRow>
+            <TableRow>
+              <TableCell align="right">no. of shares</TableCell>
+              {cells.map((cell,index) => (
+                 
+                 <TableCell align="right" key={"WeightedAverageNumberOfShareOutstandingBasicAndDiluted_" + index}>{usd(cell.WeightedAverageNumberOfShareOutstandingBasicAndDiluted)}</TableCell>    
+            ))} 
+            </TableRow>  
+            <TableRow>
+          <TableCell variant="head" className={classes.Head}>
+            discounted cash flow
+          </TableCell>
+          {cells.map((cell, index) => (
+            <TableCell key={"cf_" + index}>
+              {cell.WorkingCapital / Math.pow(1 + 0.02, index + 1)}
+            </TableCell>
+          ))}
+        </TableRow>                                                       
                 
           </TableBody>
         </Table>

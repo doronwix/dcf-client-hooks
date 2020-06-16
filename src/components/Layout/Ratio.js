@@ -1,10 +1,11 @@
 import * as React from "react";
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { rateContext } from "./../../providers/DataProvider";
+import { rateContext, financialContext } from "./../../providers/DataProvider";
 import Title from "./Title";
+import { usd } from "../../utilities/currencyFormat";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -19,6 +20,26 @@ const useStyles = makeStyles({
 export default function Ratio() {
   const [date, setDate] = useState(new Date().toDateString());
   const { rate } = useContext(rateContext);
+  const { secData } = useContext(financialContext);
+  var refDcf = useRef(0);
+  const sum = secData
+    ? secData
+        .map((data, index) => data.WorkingCapital)
+        .reduce((total, currentValue, index) => {
+          return total + currentValue / Math.pow(1 + 0.02, index);
+        })
+    : 0;
+  const sharesOutstanding = secData
+    ? secData
+        .map(
+          (data, index) => data.WeightedAverageNumberOfDilutedSharesOutstanding
+        )
+        .reduce((total, currentValue, index) => {
+          return total > currentValue ? total : currentValue;
+        })
+    : 0;
+  refDcf = sum / sharesOutstanding;
+
   const classes = useStyles();
   return (
     <React.Fragment>
@@ -31,7 +52,7 @@ export default function Ratio() {
       </Typography>
       <Title>DCF Price</Title>
       <Typography component="p" variant="h4">
-        {rate}
+        {refDcf.toFixed(2)}
       </Typography>
       <div>
         <Link color="primary" href="#" onClick={preventDefault}>

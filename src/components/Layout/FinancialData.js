@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef } from "react";
+
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -24,6 +25,7 @@ export default function FinancialData(prop) {
   const classes = useStyles();
 
   const cells = prop.data ? prop.data : [];
+
   return (
     <React.Fragment>
       <Title>Financial Data</Title>
@@ -156,6 +158,28 @@ export default function FinancialData(prop) {
           {cells.map((cell, index) => (
             <TableCell key={"fcf_" + index}>
               {usd(cell.WorkingCapital)}
+            </TableCell>
+          ))}
+        </TableRow>
+        <TableRow>
+          <TableCell variant="head" className={classes.Head}>
+            no. of stocks
+          </TableCell>
+          {cells.map((cell, index) => (
+            <TableCell
+              key={"WeightedAverageNumberOfDilutedSharesOutstanding_" + index}
+            >
+              {cell.WeightedAverageNumberOfDilutedSharesOutstanding}
+            </TableCell>
+          ))}
+        </TableRow>
+        <TableRow>
+          <TableCell variant="head" className={classes.Head}>
+            discounted cash flow
+          </TableCell>
+          {cells.map((cell, index) => (
+            <TableCell key={"cf_" + index}>
+              {usd(cell.WorkingCapital / Math.pow(1 + 0.02, index + 1))}
             </TableCell>
           ))}
         </TableRow>

@@ -73,6 +73,7 @@ const TableView = () => {
                 <TableCell align="right">{usd(row.NetIncomeLoss)}</TableCell>
                 <TableCell align="right">{usd(row.Acquisitions)}</TableCell>
                 <TableCell align="right">{usd(row.FCF)}</TableCell>
+                <TableCell align="right">{usd(row.WeightedAverageNumberOfShareOutstandingBasicAndDiluted)}</TableCell>
                 {/*<TableCell align="right">{usd(row.CurrentLiabilities)}</TableCell>*/}
                 
                 
