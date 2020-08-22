@@ -40,7 +40,7 @@ async function fetchSecData(l_symbol)
 const DataProvider = ({ children }) => {
     const [symbol, setSymbol] = useState();
 
-    const [secData, setSecData] = useState(null);
+    const [secData, setSecData] = useState();
 
     const [chartsData, setChartsData] = useState([]);
 
@@ -49,7 +49,10 @@ const DataProvider = ({ children }) => {
 
 
     const updateSymbol = ((value) => {
+        setChartsData([]);
         setSymbol(value);
+        setRate();
+
     })
     useEffect(() => {
         if (!symbol){
@@ -73,11 +76,18 @@ const DataProvider = ({ children }) => {
             setChartsData(data.extrapolations);
             
 
-        });
+        }).catch((error) => {
+            setChartsData([]);
+            setSymbol();
+            setRate();
+            alert('Error:' + error);
+            return;
+
+          });
     }, [symbol]);
 
     useEffect(() => {
-        if (!symbol){
+        if (!symbol){        
             return;
         }
         fetchRateData(symbol)
@@ -87,6 +97,8 @@ const DataProvider = ({ children }) => {
             
         });
     }, [symbol]);
+
+    
 
     const financialStore = {
         symbol: symbol,

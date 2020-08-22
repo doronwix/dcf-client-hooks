@@ -31,14 +31,17 @@ export default function Ratio() {
     : 0;
   const sharesOutstanding = secData
     ? secData
-        .map(
-          (data, index) => data.WeightedAverageNumberOfDilutedSharesOutstanding
-        )
+        .map((data, index) => data.NumberOfSharesOutstanding)
         .reduce((total, currentValue, index) => {
           return total > currentValue ? total : currentValue;
         })
     : 0;
   refDcf = sum / sharesOutstanding;
+
+  const multiplePE =
+    secData && typeof secData[secData.length - 1].EPS !== "undefined"
+      ? rate / secData[secData.length - 1].EPS
+      : 0;
 
   const classes = useStyles();
   return (
@@ -53,6 +56,10 @@ export default function Ratio() {
       <Title>DCF Price</Title>
       <Typography component="p" variant="h4">
         {refDcf.toFixed(2)}
+      </Typography>
+      <Title>P/E</Title>
+      <Typography component="p" variant="h4">
+        {multiplePE.toFixed(2)}
       </Typography>
       <div>
         <Link color="primary" href="#" onClick={preventDefault}>

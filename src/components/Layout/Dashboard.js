@@ -2,6 +2,7 @@ import React, { useContext, useState, useRef } from "react";
 import { financialContext } from "./../../providers/DataProvider";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
+import { sizing } from "@material-ui/system";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
@@ -100,9 +101,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     margin: "0 auto",
   },
-  fixedHeight: {
-    height: "40vh",
-  },
+  fixedHeight: {},
 }));
 
 export default function Dashboard() {
@@ -169,51 +168,58 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                {chartsData.revenuesExtrapolated && (
-                  <Chart
-                    data={chartsData.revenuesExtrapolated}
-                    title={"Revenues"}
-                  />
-                )}
-                {!chartsData.revenuesExtrapolated && symbol && (
-                  <Spinner></Spinner>
-                )}
-              </Paper>
+            {chartsData && (
+              /* Chart */
 
-              <Paper className={fixedHeightPaper}>
-                {chartsData.revenuesExtrapolated && (
-                  <Chart
-                    data={chartsData.netIncomeExtrapolated}
-                    title={"NetIncomeLoss"}
-                  />
-                )}
-                {!chartsData.netIncomeExtrapolated && symbol && (
-                  <Spinner></Spinner>
-                )}
-              </Paper>
+              <Grid item xs={12} md={8} lg={9}>
+                <Paper width="33%" height="100%">
+                  {chartsData.revenuesExtrapolated && (
+                    <Chart
+                      data={chartsData.revenuesExtrapolated}
+                      title={"Revenues"}
+                    />
+                  )}
+                  {!chartsData.revenuesExtrapolated && symbol && (
+                    <Spinner></Spinner>
+                  )}
+                </Paper>
 
-              <Paper className={fixedHeightPaper}>
-                {chartsData.liabilities && (
-                  <Chart data={chartsData.liabilities} title={"Liabilities"} />
-                )}
-                {!chartsData.liabilities && symbol && <Spinner></Spinner>}
-              </Paper>
-            </Grid>
+                <Paper width="33%" height="100%">
+                  {chartsData.revenuesExtrapolated && (
+                    <Chart
+                      data={chartsData.netIncomeExtrapolated}
+                      title={"NetIncomeLoss"}
+                    />
+                  )}
+                  {!chartsData.netIncomeExtrapolated && symbol && (
+                    <Spinner></Spinner>
+                  )}
+                </Paper>
+
+                <Paper width="33%" height="100%">
+                  {chartsData.liabilities && (
+                    <Chart
+                      data={chartsData.liabilities}
+                      title={"Liabilities"}
+                    />
+                  )}
+                  {!chartsData.liabilities && symbol && <Spinner></Spinner>}
+                </Paper>
+              </Grid>
+            )}
             {/* Recent Report */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
                 <Ratio name={"P/E"} />
               </Paper>
             </Grid>
-            {/* Financial Details */}
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <FinancialData data={secData} />
-              </Paper>
-            </Grid>
+            {secData /* Financial Details */ && (
+              <Grid item xs={12}>
+                <Paper className={classes.paper}>
+                  <FinancialData data={secData} />
+                </Paper>
+              </Grid>
+            )}
           </Grid>
         </Container>
       </main>

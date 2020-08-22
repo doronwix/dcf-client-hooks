@@ -156,9 +156,7 @@ export default function FinancialData(prop) {
             FCF
           </TableCell>
           {cells.map((cell, index) => (
-            <TableCell key={"fcf_" + index}>
-              {usd(cell.WorkingCapital)}
-            </TableCell>
+            <TableCell key={"fcf_" + index}>{usd(cell.FCF)}</TableCell>
           ))}
         </TableRow>
         <TableRow>
@@ -166,10 +164,8 @@ export default function FinancialData(prop) {
             no. of stocks
           </TableCell>
           {cells.map((cell, index) => (
-            <TableCell
-              key={"WeightedAverageNumberOfDilutedSharesOutstanding_" + index}
-            >
-              {cell.WeightedAverageNumberOfDilutedSharesOutstanding}
+            <TableCell key={"NumberOfSharesOutstanding" + index}>
+              {cell.NumberOfSharesOutstanding}
             </TableCell>
           ))}
         </TableRow>
@@ -181,6 +177,14 @@ export default function FinancialData(prop) {
             <TableCell key={"cf_" + index}>
               {usd(cell.WorkingCapital / Math.pow(1 + 0.02, index + 1))}
             </TableCell>
+          ))}
+        </TableRow>
+        <TableRow>
+          <TableCell variant="head" className={classes.Head}>
+            Earning per Share
+          </TableCell>
+          {cells.map((cell, index) => (
+            <TableCell key={"cf_" + index}>{cell.EPS}</TableCell>
           ))}
         </TableRow>
       </Table>

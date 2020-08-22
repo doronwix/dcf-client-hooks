@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import StretchedData2 from "./../StretchedData2";
+import StretchedData from "./../StretchedData";
 
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -12,8 +13,10 @@ const routes = [
   {
     path: "/",
     exact: true,
-    sidebar: () => <StretchedData2></StretchedData2>,
-    //main: () => <h2>Home</h2>
+    sidebar: () => [
+      <StretchedData2></StretchedData2>,
+      <StretchedData></StretchedData>,
+    ],
   },
 ];
 export const mainListItems = (
@@ -23,7 +26,15 @@ export const mainListItems = (
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="StretchedData2">
-        <Link to="/StretchedData2">Home</Link>
+        <Link to="/StretchedData2">test1</Link>
+      </ListItemText>
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <DashboardIcon />
+      </ListItemIcon>
+      <ListItemText primary="StretchedData">
+        <Link to="/StretchedData">test2</Link>
       </ListItemText>
     </ListItem>
 
